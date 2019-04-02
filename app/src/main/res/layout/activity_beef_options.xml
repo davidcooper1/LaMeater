@@ -102,6 +102,7 @@
         android:background="@drawable/text_view_oval"
         android:gravity="center"
         android:text="Beef"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="21sp"

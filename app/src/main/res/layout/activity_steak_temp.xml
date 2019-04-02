@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/SteakPicture" />
 
     <TextView
         android:id="@+id/textView3"
@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100°"
+        android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
 
@@ -63,25 +64,25 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/InptCustTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="2"
         android:hint="100"
         android:inputType="numberSigned"
         android:textAlignment="textStart"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/textView4" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/SteakPicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toTopOf="@+id/editText4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5"
+        app:layout_constraintTop_toBottomOf="@+id/InptCustTemp"
         app:srcCompat="@android:drawable/checkbox_off_background" />
 
     <TextView
@@ -91,6 +92,7 @@
         android:background="@drawable/text_view_oval"
         android:gravity="center"
         android:text="Steak"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="21sp"
@@ -104,10 +106,19 @@
         android:background="@drawable/text_view_oval"
         android:gravity="center"
         android:text="Beef"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:textSize="21sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SteakTitle" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/set_temp_button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/InptCustTemp" />
 
 </android.support.constraint.ConstraintLayout>
