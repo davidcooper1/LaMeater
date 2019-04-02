@@ -24,10 +24,23 @@ public class TemperatureFetcher {
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // These are the IDs for callback functions.
-    public static final int CALLBACK_DISCONNECT    = 0x00000001;
-    public static final int CALLBACK_CONNECT       = 0x00000002;
-    public static final int CALLBACK_CONNECTING    = 0x00000004;
-    public static final int CALLBACK_DATA_RECEIVED = 0x00000008;
+    public static final int CALLBACK_DISCONNECT       = 0x00000001;
+    public static final int CALLBACK_CONNECT          = 0x00000002;
+    public static final int CALLBACK_CONNECTING       = 0x00000004;
+    public static final int CALLBACK_DATA_RECEIVED    = 0x00000008;
+    public static final int CALLBACK_DEVICE_NOT_FOUND = 0x00000010;
+
+    // These are the IDs for possible states:
+    public static final int STATUS_CONNECTED    = 0x00000001;
+    public static final int STATUS_DEVICE_FOUND = 0x00000002;
+    public static final int STATUS_CONNECTING   = 0x00000004;
+    public static final int STATUS_DISCONNECTED = 0x00000008;
+
+    // Stores the status of the device discovery and connection process.
+    private int status;
+
+    // Used for synchronization of the status property.
+    private ReentrantLock statusLock;
 
     // Instance of ConnectThread so that a connection can be closed at any time if need be.
     private ConnectThread c;
@@ -46,6 +59,7 @@ public class TemperatureFetcher {
     private Runnable dataReceivedRunnable;
     private Runnable connectRunnable;
     private Runnable connectingRunnable;
+    private Runnable deviceNotFoundRunnable;
 
     // Used for synchronization of the data propery.
     private ReentrantLock dataLock;
@@ -64,6 +78,7 @@ public class TemperatureFetcher {
                 String deviceName = device.getName();
                 Log.d("DISCOVERY", device.getName() + " : " + device.getAddress());
                 if (deviceName != null && deviceName.equals("LaMeater")) {
+                    setStatus(STATUS_DEVICE_FOUND);
                     int state = device.getBondState();
                     if (state == BluetoothDevice.BOND_NONE) { // LaMeater was found but not previously connected.
                         // Create a pairing request.
@@ -104,6 +119,10 @@ public class TemperatureFetcher {
                         connectToDevice(device);
                     }
                 }
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                if (getStatus() == STATUS_DISCONNECTED) {
+                    attemptCallback(CALLBACK_DEVICE_NOT_FOUND);
+                }
             }
         }
     };
@@ -117,10 +136,13 @@ public class TemperatureFetcher {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         callbackLock = new ReentrantLock();
         dataLock = new ReentrantLock();
+        statusLock = new ReentrantLock();
+        status = STATUS_DISCONNECTED;
     }
 
     // Checks if LaMeater was already paired if not try to find and connect to it.
     public void connect() {
+        setStatus(STATUS_DISCONNECTED);
         // Check if device is already paired, if not pair it then create the connection.
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
         BluetoothDevice device = findDeviceFromPaired();
@@ -160,6 +182,7 @@ public class TemperatureFetcher {
 
     // Attempts to connect to LaMeater.
     public void connectToDevice(BluetoothDevice device) {
+        setStatus(STATUS_CONNECTING);
         attemptCallback(CALLBACK_CONNECTING);
         disconnect();
         c = new ConnectThread(device);
@@ -198,6 +221,18 @@ public class TemperatureFetcher {
             case CALLBACK_DISCONNECT :
                 disconnectRunnable = callback;
                 break;
+
+            case CALLBACK_CONNECT :
+                connectRunnable = callback;
+                break;
+
+            case CALLBACK_CONNECTING :
+                connectingRunnable = callback;
+                break;
+
+            case CALLBACK_DEVICE_NOT_FOUND :
+                deviceNotFoundRunnable = callback;
+                break;
         }
     }
 
@@ -218,8 +253,12 @@ public class TemperatureFetcher {
                             break;
                         case CALLBACK_CONNECT:
                             callbackRunnable = connectRunnable;
+                            break;
                         case CALLBACK_CONNECTING:
                             callbackRunnable = connectingRunnable;
+                            break;
+                        case CALLBACK_DEVICE_NOT_FOUND:
+                            callbackRunnable = deviceNotFoundRunnable;
                     }
                     callback = new Thread(callbackRunnable);
                     callback.start();
@@ -248,6 +287,28 @@ public class TemperatureFetcher {
             data = value;
         } finally {
             dataLock.unlock();
+        }
+    }
+
+    public int getStatus() {
+        statusLock.lock();
+
+        int s = -1;
+        try {
+            s = status;
+        } finally {
+            statusLock.unlock();
+        }
+        return s;
+    }
+
+    public void setStatus(int newStatus) {
+        statusLock.lock();
+
+        try {
+            status = newStatus;
+        } finally {
+            statusLock.unlock();
         }
     }
 
@@ -282,13 +343,16 @@ public class TemperatureFetcher {
                 Log.d("CONNECT", "Socket connected.");
             } catch (IOException err) {
                 try {
+                    attemptCallback(CALLBACK_DEVICE_NOT_FOUND);
                     socket.close();
+                    Log.e("ERROR", "Could not create socket.", err);
                 } catch (IOException e) {
-                    Log.e("ERROR", "Coud not close client socket.", e);
+                    Log.e("ERROR", "Could not close client socket.", e);
                 }
                 return;
             }
 
+            setStatus(STATUS_CONNECTED);
             attemptCallback(CALLBACK_CONNECT);
             connected = new ConnectedThread(socket);
             connected.start();
