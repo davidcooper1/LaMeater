@@ -95,12 +95,15 @@
         app:layout_constraintBottom_toTopOf="@+id/SelBtnSteak"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/BeefTitle"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/text_view_oval"
+        android:gravity="center"
         android:text="Beef"
+        android:textAlignment="center"
+        android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="21sp"
         app:layout_constraintStart_toStartOf="parent"

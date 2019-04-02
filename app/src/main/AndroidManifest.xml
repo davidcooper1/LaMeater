@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BeefOptionsActivity"></activity>
+        <activity android:name=".SteakTempActivity"></activity>
+        <activity android:name=".BeefOptionsActivity" />
         <activity android:name=".BeefSelectionActivity" />
         <activity android:name=".MeatSelectionActivity" />
         <activity android:name=".MainActivity">
