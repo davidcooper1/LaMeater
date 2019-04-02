@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 // This class is used as a wrapper for activities.
 
@@ -17,19 +18,19 @@ public class PermissionActivity extends AppCompatActivity {
 
     private boolean receiverAdded = false;
 
-    protected void obtainPermission(int permissionId) {
-        switch (permissionId) {
-            case PERMISSION_REQUEST_COARSE_LOCATION :
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                            PERMISSION_REQUEST_COARSE_LOCATION
-                    );
-                } else {
-                    onPermissionGranted(PERMISSION_REQUEST_COARSE_LOCATION);
-                }
-                break;
+    protected void onPostCreate(Bundle savedInstanceBundle) {
+        super.onPostCreate(savedInstanceBundle);
+    }
+
+    protected void obtainPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSION_REQUEST_COARSE_LOCATION
+            );
+        } else {
+            onPermissionGranted(PERMISSION_REQUEST_COARSE_LOCATION);
         }
     }
 
@@ -55,8 +56,23 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected void onPermissionDenied(int requestCode) { }
 
+    protected void setCallbacks() { }
+
     protected void onDestroy() {
         super.onDestroy();
+        if (receiverAdded) {
+            unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
+        }
+    }
+
+    protected void onPostResume() {
+        super.onPostResume();
+        setCallbacks();
+        obtainPermissions();
+    }
+
+    protected void onPause() {
+        super.onPause();
         if (receiverAdded) {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
         }

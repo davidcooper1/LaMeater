@@ -13,8 +13,8 @@ public class MainActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        obtainPermission(PERMISSION_REQUEST_COARSE_LOCATION);
+        setCallbacks();
+        obtainPermissions();
     }
 
     public void openMeatChoices(View view) {
@@ -22,9 +22,8 @@ public class MainActivity extends PermissionActivity {
         startActivity(new Intent(this, MeatSelectionActivity.class));
     }
 
-    public void onPermissionGranted(int requestCode) {
+    public void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-
         final TextView tempOverview = findViewById(R.id.tempOverview);
 
         fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
@@ -40,17 +39,22 @@ public class MainActivity extends PermissionActivity {
         });
 
         fetcher.setCallback(fetcher.CALLBACK_DISCONNECT, new Runnable() {
-           public void run() {
-               tempOverview.post(new Runnable() {
-                   public void run() {
-                       tempOverview.setText("--° / --°");
-                   }
-               });
-               fetcher.connect();
-           }
+            public void run() {
+                tempOverview.post(new Runnable() {
+                    public void run() {
+                        tempOverview.setText("--° / --°");
+                    }
+                });
+                fetcher.connect();
+            }
         });
 
         fetcher.setCallbacksEnabled(true);
+    }
+
+    public void onPermissionGranted(int requestCode) {
+        TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+        TextView tempOverview = findViewById(R.id.tempOverview);
 
         if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
             fetcher.connect();

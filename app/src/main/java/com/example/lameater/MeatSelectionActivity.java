@@ -14,42 +14,8 @@ public class MeatSelectionActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meat_selection);
-
-        final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        final Button tempOverview = findViewById(R.id.CurTempHomeBtn);
-
-        fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
-            public void run() {
-                tempOverview.post(new Runnable() {
-                    public void run() {
-                        double temp = Double.parseDouble(fetcher.getData());
-                        temp = Math.floor(temp);
-                        tempOverview.setText((int)temp + "° / --°");
-                    }
-                });
-            }
-        });
-
-        fetcher.setCallback(fetcher.CALLBACK_DISCONNECT, new Runnable() {
-            public void run() {
-                tempOverview.post(new Runnable() {
-                    public void run() {
-                        tempOverview.setText("--° / --°");
-                    }
-                });
-            }
-        });
-
-        fetcher.setCallbacksEnabled(true);
-
-        if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
-            fetcher.connect();
-        } else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
-            double temp = Double.parseDouble(fetcher.getData());
-            temp = Math.floor(temp);
-            tempOverview.setText((int)temp + "° / --°");
-        }
-
+        setCallbacks();
+        obtainPermissions();
     }
 
     public void MeatSelected(View view) {
@@ -81,6 +47,50 @@ public class MeatSelectionActivity extends PermissionActivity {
                 throw new RuntimeException("Unknown button ID");
 
 
+        }
+    }
+
+    protected void setCallbacks() {
+        final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+        final Button tempOverview = findViewById(R.id.CurTempHomeBtn);
+
+        fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
+            public void run() {
+                tempOverview.post(new Runnable() {
+                    public void run() {
+                        double temp = Double.parseDouble(fetcher.getData());
+                        temp = Math.floor(temp);
+                        tempOverview.setText((int)temp + "° / --°");
+                    }
+                });
+            }
+        });
+
+        fetcher.setCallback(fetcher.CALLBACK_DISCONNECT, new Runnable() {
+            public void run() {
+                tempOverview.post(new Runnable() {
+                    public void run() {
+                        tempOverview.setText("--° / --°");
+                    }
+                });
+            }
+        });
+
+        fetcher.setCallbacksEnabled(true);
+
+
+    }
+
+    public void onPermissionGranted(int requestCode) {
+        TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+        Button tempOverview = findViewById(R.id.CurTempHomeBtn);
+
+        if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
+            fetcher.connect();
+        } else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
+            double temp = Double.parseDouble(fetcher.getData());
+            temp = Math.floor(temp);
+            tempOverview.setText((int)temp + "° / --°");
         }
     }
 
