@@ -30,6 +30,10 @@ public class PermissionActivity extends AppCompatActivity {
                     PERMISSION_REQUEST_COARSE_LOCATION
             );
         } else {
+            TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+            registerReceiver(fetcher.getReceiver(), fetcher.getFilter());
+            receiverAdded = true;
+
             onPermissionGranted(PERMISSION_REQUEST_COARSE_LOCATION);
         }
     }
@@ -38,9 +42,7 @@ public class PermissionActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    MeaterData data = MeaterData.getInstance();
-                    TemperatureFetcher fetcher = data.getFetcher();
-
+                    TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
                     registerReceiver(fetcher.getReceiver(), fetcher.getFilter());
                     receiverAdded = true;
 
@@ -62,6 +64,7 @@ public class PermissionActivity extends AppCompatActivity {
         super.onDestroy();
         if (receiverAdded) {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
+            receiverAdded = false;
         }
     }
 
@@ -75,6 +78,7 @@ public class PermissionActivity extends AppCompatActivity {
         super.onPause();
         if (receiverAdded) {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
+            receiverAdded = false;
         }
     }
 

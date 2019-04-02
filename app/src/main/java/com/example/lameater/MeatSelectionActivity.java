@@ -14,8 +14,6 @@ public class MeatSelectionActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meat_selection);
-        setCallbacks();
-        obtainPermissions();
     }
 
     public void MeatSelected(View view) {
