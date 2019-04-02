@@ -7,12 +7,36 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/output"
+        android:id="@+id/tempOverview"
+
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/text_view_circle"
+
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="--° / --°"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/selMeatBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+    <Button
+        android:id="@+id/selMeatBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:background="@drawable/button_oval"
+        android:onClick="openMeatChoices"
+        android:text="@string/start_meat_selection"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tempOverview" />
 </android.support.constraint.ConstraintLayout>

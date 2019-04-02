@@ -1,7 +1,9 @@
 package com.example.lameater;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends PermissionActivity {
@@ -12,4 +14,8 @@ public class MainActivity extends PermissionActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void openMeatChoices(View view) {
+        Intent intent = new Intent(this, MeatSelectionActivity.class);
+        startActivity(intent);
+    }
 }
