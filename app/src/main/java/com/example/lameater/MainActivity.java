@@ -3,6 +3,7 @@ package com.example.lameater;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,13 +18,14 @@ public class MainActivity extends PermissionActivity {
     }
 
     public void openMeatChoices(View view) {
-        Intent intent = new Intent(this, MeatSelectionActivity.class);
-        startActivity(intent);
+        MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+        startActivity(new Intent(this, MeatSelectionActivity.class));
     }
 
     public void onPermissionGranted(int requestCode) {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        final TextView tempOverview = (TextView)findViewById(R.id.tempOverview);
+
+        final TextView tempOverview = findViewById(R.id.tempOverview);
 
         fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
             public void run() {
@@ -49,13 +51,15 @@ public class MainActivity extends PermissionActivity {
         });
 
         fetcher.setCallbacksEnabled(true);
-        fetcher.connect();
 
-    }
+        if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
+            fetcher.connect();
+        } else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
+            double temp = Double.parseDouble(fetcher.getData());
+            temp = Math.floor(temp);
+            tempOverview.setText((int)temp + "° / --°");
+        }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
     }
 
 }

@@ -362,6 +362,7 @@ public class TemperatureFetcher {
                 Log.e("ERROR", "Error while closing ConnectedThread.", e);
             }
 
+            setStatus(STATUS_DISCONNECTED);
             attemptCallback(CALLBACK_DISCONNECT);
         }
 
@@ -402,7 +403,7 @@ public class TemperatureFetcher {
                 try {
                     final String line = input.next();
                     setData(line);
-                    Log.d("DATA", (new Date()).toString());
+                    Log.d("DATA", getData());
                     attemptCallback(CALLBACK_DATA_RECEIVED);
                 } catch (Exception e) {
                     Log.e("ERROR", "Input stream was disconnected.", e);
