@@ -16,7 +16,7 @@ public class BeefOptionsActivity extends AppCompatActivity {
     public void TypeSelected(View view) {
         switch (view.getId()) {
             case R.id.SelBtnSteak:
-                //startActivity(new Intent(this, BeefOptionsActivity.class));
+                startActivity(new Intent(this, SteakTempActivity.class));
                 break;
             case R.id.SelBtnBrisket:
                 //startActivity(new Intent(this, PoultryOptionsActivity.class));
