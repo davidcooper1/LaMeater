@@ -1,11 +1,11 @@
 package com.example.lameater;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class BeefOptionsActivity extends AppCompatActivity {
+public class ChickenOptionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class BeefOptionsActivity extends AppCompatActivity {
     public void TypeSelected(View view) {
         switch (view.getId()) {
             case R.id.SelBtnBreast:
-                startActivity(new Intent(this, SteakTempActivity.class));
+                //startActivity(new Intent(this, BreastTempActivity.class));
                 break;
             case R.id.SelBtnThigh:
                 //startActivity(new Intent(this, PoultryOptionsActivity.class));
