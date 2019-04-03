@@ -1,6 +1,8 @@
 package com.example.lameater;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,6 +71,27 @@ public class MeatSelectionActivity extends PermissionActivity {
                 tempOverview.post(new Runnable() {
                     public void run() {
                         tempOverview.setText("--° / --°");
+                    }
+                });
+                fetcher.connect();
+            }
+        });
+
+        fetcher.setCallback(fetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
+            //Runs the alert dialog pop-up when LaMeater device is not found.
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //Creates the Alert itself
+                        new AlertDialog.Builder(MeatSelectionActivity.this)
+                                .setTitle("Unable to Find LaMeater Device")
+                                .setMessage("Make sure device is turned on then press retry.")
+                                //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        fetcher.connect();
+                                    }
+                                }).show(); //funtion to actually create the alert
                     }
                 });
             }
