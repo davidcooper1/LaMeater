@@ -10,7 +10,7 @@
         android:bottom="16dp"/>
 
     <solid
-        android:color="#3C3E3F"/>
+        android:color="#FF3C3F41"/>
 
     <stroke
         android:width="5dp"
