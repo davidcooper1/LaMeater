@@ -68,14 +68,15 @@ public class PermissionActivity extends AppCompatActivity {
         }
     }
 
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onStart() {
+        super.onStart();
         setCallbacks();
         obtainPermissions();
     }
 
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        Log.d("CREATE", "PAUSE");
         if (receiverAdded) {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
             receiverAdded = false;
