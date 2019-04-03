@@ -1,6 +1,7 @@
 package com.example.lameater;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -70,13 +71,14 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
+        if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
+            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
         setCallbacks();
         obtainPermissions();
     }
 
     protected void onStop() {
         super.onStop();
-        Log.d("CREATE", "PAUSE");
         if (receiverAdded) {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
             receiverAdded = false;

@@ -31,10 +31,10 @@ public class TemperatureFetcher {
     public static final int CALLBACK_DEVICE_NOT_FOUND = 0x00000010;
 
     // These are the IDs for possible states:
-    public static final int STATUS_CONNECTED    = 0x00000001;
-    public static final int STATUS_DEVICE_FOUND = 0x00000002;
-    public static final int STATUS_CONNECTING   = 0x00000004;
-    public static final int STATUS_DISCONNECTED = 0x00000008;
+    public static final int STATUS_CONNECTED          = 0x00000001;
+    public static final int STATUS_DEVICE_FOUND       = 0x00000002;
+    public static final int STATUS_CONNECTING         = 0x00000004;
+    public static final int STATUS_DISCONNECTED       = 0x00000008;
 
     // Stores the status of the device discovery and connection process.
     private int status;
@@ -143,8 +143,6 @@ public class TemperatureFetcher {
     // Checks if LaMeater was already paired if not try to find and connect to it.
     public void connect() {
         setStatus(STATUS_DISCONNECTED);
-        // Check if device is already paired, if not pair it then create the connection.
-        BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
         BluetoothDevice device = findDeviceFromPaired();
         if (device != null) {
             Log.d("EVENT", "Device found!");
