@@ -17,6 +17,9 @@ public class BeefOptionsActivity extends PermissionActivity {
 
     public void TypeSelected(View view) {
         switch (view.getId()) {
+            case R.id.BeefTitle:
+                startActivity(new Intent(this, MeatSelectionActivity.class));
+                break;
             case R.id.SelBtnSteak:
                 startActivity(new Intent(this, SteakTempActivity.class));
                 break;
