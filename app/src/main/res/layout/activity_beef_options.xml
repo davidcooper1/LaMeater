@@ -12,10 +12,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/button_oval"
         android:onClick="TypeSelected"
         android:text="Sausage"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SelBtnGround" />
 
@@ -24,14 +27,16 @@
         android:layout_width="362dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="24dp"
-        android:text="Steak"
+        android:background="@drawable/button_oval"
         android:onClick="TypeSelected"
+        android:text="Steak"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/SelBtnBrisket"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CurTempHomeBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/SelBtnBrisket"
@@ -39,10 +44,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:text="Brisket"
+        android:background="@drawable/button_oval"
         android:onClick="TypeSelected"
+        android:text="Brisket"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/SelBtnRibs"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SelBtnSteak" />
 
@@ -52,10 +60,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:text="Hamburger/Ground Beef"
+        android:background="@drawable/button_oval"
         android:onClick="TypeSelected"
+        android:text="Hamburger/Ground Beef"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/SelBtnSausage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SelBtnRibs" />
 
@@ -65,10 +76,13 @@
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:text="Ribs"
+        android:background="@drawable/button_oval"
         android:onClick="TypeSelected"
+        android:text="Ribs"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/SelBtnGround"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SelBtnBrisket" />
 
@@ -77,8 +91,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/button_qtr_circle"
-        android:text="--° / --°"
         android:onClick="TypeSelected"
+        android:text="--° / --°"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -88,12 +102,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
         android:text="@string/start_meat_selection"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/SelBtnSteak"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BeefTitle" />
 
     <Button
         android:id="@+id/BeefTitle"
