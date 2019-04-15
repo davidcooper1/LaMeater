@@ -18,7 +18,8 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/SelBtnPoultry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selMeatTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/selMeatTitle"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/selMeatTitle"
