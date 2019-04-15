@@ -17,10 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnWholes" />
+        app:layout_constraintTop_toBottomOf="@+id/SelBtnGround" />
 
     <Button
-        android:id="@+id/SelBtnBreast"
+        android:id="@+id/SelBtnSteak"
         android:layout_width="362dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/CurTempHomeBtn" />
 
     <Button
-        android:id="@+id/SelBtnThigh"
+        android:id="@+id/SelBtnBrisket"
         android:layout_width="362dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -44,10 +44,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnBreast" />
+        app:layout_constraintTop_toBottomOf="@+id/SelBtnSteak" />
 
     <Button
-        android:id="@+id/SelBtnWholes"
+        android:id="@+id/SelBtnGround"
         android:layout_width="362dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -57,10 +57,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnWing" />
+        app:layout_constraintTop_toBottomOf="@+id/SelBtnRibs" />
 
     <Button
-        android:id="@+id/SelBtnWing"
+        android:id="@+id/SelBtnRibs"
         android:layout_width="362dp"
         android:layout_height="48dp"
         android:layout_marginStart="24dp"
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnThigh" />
+        app:layout_constraintTop_toBottomOf="@+id/SelBtnBrisket" />
 
     <Button
         android:id="@+id/CurTempHomeBtn"
@@ -92,7 +92,7 @@
         android:text="@string/start_meat_selection"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/SelBtnBreast"
+        app:layout_constraintBottom_toTopOf="@+id/SelBtnSteak"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
