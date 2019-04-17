@@ -1,13 +1,20 @@
 package com.example.lameater;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 public class MeaterData {
 
     private static MeaterData instance;
-
     private final TemperatureFetcher fetcher;
+    private final DatabaseHelper dbHelp;
+    private final SQLiteDatabase db;
 
     private MeaterData() {
         fetcher = new TemperatureFetcher();
+        Context context = MeatApp.getAppContext();
+        dbHelp = new DatabaseHelper(context);
+        db = dbHelp.getReadableDatabase();
     }
 
     public static MeaterData getInstance() {
@@ -19,4 +26,9 @@ public class MeaterData {
     public TemperatureFetcher getFetcher() {
         return fetcher;
     }
+
+    public SQLiteDatabase getDatabase() {
+        return db;
+    }
+
 }
