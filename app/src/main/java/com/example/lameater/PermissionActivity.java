@@ -3,11 +3,14 @@ package com.example.lameater;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -16,6 +19,7 @@ import android.util.Log;
 public class PermissionActivity extends AppCompatActivity {
 
     protected final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    protected final int REQUEST_ENABLE_BT = 2;
 
     private boolean receiverAdded = false;
 
@@ -73,8 +77,49 @@ public class PermissionActivity extends AppCompatActivity {
         super.onStart();
         if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
             BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+        final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+
+        fetcher.setCallback(fetcher.CALLBACK_BLUETOOTH_DISABLED, new Runnable() {
+            public void run() {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        });
+
+        fetcher.setCallback(fetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
+            //Runs the alert dialog pop-up when LaMeater device is not found.
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        //Creates the Alert itself
+                        new AlertDialog.Builder(PermissionActivity.this)
+                                .setTitle("Unable to Find LaMeater Device")
+                                .setMessage("Make sure device is turned on then press retry.")
+                                //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
+                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        fetcher.connect();
+                                    }
+                                }).show(); // Create the alert
+                    }
+                });
+            }
+        });
+
         setCallbacks();
         obtainPermissions();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT) {
+            switch (resultCode) {
+                case RESULT_OK :
+                    MeaterData.getInstance().getFetcher().connect();
+                    break;
+                case RESULT_CANCELED :
+                    break;
+            }
+        }
     }
 
     protected void onStop() {

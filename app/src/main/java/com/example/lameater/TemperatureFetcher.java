@@ -24,11 +24,12 @@ public class TemperatureFetcher {
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // These are the IDs for callback functions.
-    public static final int CALLBACK_DISCONNECT       = 0x00000001;
-    public static final int CALLBACK_CONNECT          = 0x00000002;
-    public static final int CALLBACK_CONNECTING       = 0x00000004;
-    public static final int CALLBACK_DATA_RECEIVED    = 0x00000008;
-    public static final int CALLBACK_DEVICE_NOT_FOUND = 0x00000010;
+    public static final int CALLBACK_DISCONNECT         = 0x00000001;
+    public static final int CALLBACK_CONNECT            = 0x00000002;
+    public static final int CALLBACK_CONNECTING         = 0x00000004;
+    public static final int CALLBACK_DATA_RECEIVED      = 0x00000008;
+    public static final int CALLBACK_DEVICE_NOT_FOUND   = 0x00000010;
+    public static final int CALLBACK_BLUETOOTH_DISABLED = 0x00000020;
 
     // These are the IDs for possible states:
     public static final int STATUS_CONNECTED          = 0x00000001;
@@ -60,6 +61,7 @@ public class TemperatureFetcher {
     private Runnable connectRunnable;
     private Runnable connectingRunnable;
     private Runnable deviceNotFoundRunnable;
+    private Runnable bluetoothDisabledRunnable;
 
     // Used for synchronization of the data propery.
     private ReentrantLock dataLock;
@@ -143,6 +145,12 @@ public class TemperatureFetcher {
     // Checks if LaMeater was already paired if not try to find and connect to it.
     public void connect() {
         setStatus(STATUS_DISCONNECTED);
+
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+            attemptCallback(CALLBACK_BLUETOOTH_DISABLED);
+            return;
+        }
+
         BluetoothDevice device = findDeviceFromPaired();
         if (device != null) {
             Log.d("EVENT", "Device found!");
@@ -231,6 +239,9 @@ public class TemperatureFetcher {
             case CALLBACK_DEVICE_NOT_FOUND :
                 deviceNotFoundRunnable = callback;
                 break;
+
+            case CALLBACK_BLUETOOTH_DISABLED :
+                bluetoothDisabledRunnable = callback;
         }
     }
 
@@ -257,6 +268,10 @@ public class TemperatureFetcher {
                             break;
                         case CALLBACK_DEVICE_NOT_FOUND:
                             callbackRunnable = deviceNotFoundRunnable;
+                            break;
+                        case CALLBACK_BLUETOOTH_DISABLED:
+                            callbackRunnable = bluetoothDisabledRunnable;
+                            break;
                     }
                     callback = new Thread(callbackRunnable);
                     callback.start();
