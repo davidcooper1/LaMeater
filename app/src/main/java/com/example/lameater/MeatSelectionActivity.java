@@ -16,18 +16,20 @@ public class MeatSelectionActivity extends PermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_beef_options);
+
+        int cid = getIntent().getIntExtra(CategoryButton.CATEGORY_ID, -1);
+
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM Meats M", null);
+        Cursor res = db.rawQuery("SELECT * FROM Meats M WHERE cid = ?", new String[] {cid + ""});
 
         for (int i = 0; i < res.getCount(); i++) {
             // Row controller: res.moveToPosition(i)
-            // To get cid: res.getInt(i)
-            // To get name: res.getString(i+2)
-            // To get mid: res.getInt(i+1)
-            // To get description: res.getString(i+3)
+            // To get cid: res.getInt(0)
+            // To get name: res.getString(2)
+            // To get mid: res.getInt(1)
+            // To get description: res.getString(3)
             res.moveToPosition(i);
-            MeatButton mbutton = new MeatButton(this, res.getInt(i), (res.getInt(i+1)), (res.getString(i+2)));
+            MeatButton btn = new MeatButton(this, res.getInt(0), res.getInt(1), res.getString(2));
 
         }
     }
