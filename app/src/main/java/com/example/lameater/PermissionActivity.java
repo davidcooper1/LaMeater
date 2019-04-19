@@ -111,14 +111,21 @@ public class PermissionActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_CANCELED) {
                 new AlertDialog.Builder(PermissionActivity.this)
                         .setTitle("Bluetooth Needs to be Enabled")
                         .setMessage("In order to connect to the device, Bluetooth must be enabled.")
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                fetcher.connect();
+                            }
+                        })
                         .show();
+            } else {
+                fetcher.connect();
             }
-            MeaterData.getInstance().getFetcher().connect();
         }
     }
 
