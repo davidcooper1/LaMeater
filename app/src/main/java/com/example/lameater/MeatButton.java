@@ -11,7 +11,7 @@ public class MeatButton extends android.support.v7.widget.AppCompatButton {
     private int cid;
     private int mid;
 
-    public MeatButton(Context c, int cid, String name) {
+    public MeatButton(Context c, int cid, int mid, String name) {
         super(c);
         setText(name);
         this.cid = cid;
