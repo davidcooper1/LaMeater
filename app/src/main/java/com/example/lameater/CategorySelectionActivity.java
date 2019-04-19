@@ -6,15 +6,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class CategorySelectionActivity extends PermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_meat_selection);
+        setContentView(R.layout.activity_category_selection);
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
+        Cursor res = db.rawQuery("SELECT DISTINCT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
+
+        ScrollView scroll = findViewById(R.id.scroll);
+        LinearLayout linear_layout = scroll.findViewById(R.id.linear_layout);
+        linear_layout.removeAllViews();
+
+        Button test = findViewById(R.id.test);
+        test.setText("Please Work");
+        test.setTextColor(0xFFFFFFFF);
+        test.setBackgroundResource(R.drawable.text_view_oval);
 
         for (int i = 0; i < res.getCount(); i++) {
             // Row controller: res.moveToPosition()
@@ -22,53 +33,32 @@ public class CategorySelectionActivity extends PermissionActivity {
             // To get name: res.getString(1)
             res.moveToPosition(i);
             CategoryButton cbutton = new CategoryButton(this, (res.getInt(0)), (res.getString(1)));
+
+            cbutton.setTextColor(0xFFFFFFFF);
+            //cbutton.setText("TextView " + String.valueOf(i));
+            cbutton.setBackgroundResource(R.drawable.button_oval);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(20,20,20,20);
+            cbutton.setLayoutParams(params);
+
+            linear_layout.addView(cbutton);
         }
     }
 
     protected void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        final Button tempOverview = findViewById(R.id.CurTempHomeBtn);
 
         fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
             public void run() {
-                tempOverview.post(new Runnable() {
-                    public void run() {
-                        double temp = Double.parseDouble(fetcher.getData());
-                        temp = Math.floor(temp);
-                        tempOverview.setText((int)temp + "° / --°");
-                    }
-                });
+
             }
         });
 
         fetcher.setCallback(fetcher.CALLBACK_DISCONNECT, new Runnable() {
             public void run() {
-                tempOverview.post(new Runnable() {
-                    public void run() {
-                        tempOverview.setText("--° / --°");
-                    }
-                });
-                fetcher.connect();
-            }
-        });
 
-        fetcher.setCallback(fetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
-            //Runs the alert dialog pop-up when LaMeater device is not found.
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        //Creates the Alert itself
-                        new AlertDialog.Builder(CategorySelectionActivity.this)
-                                .setTitle("Unable to Find LaMeater Device")
-                                .setMessage("Make sure device is turned on then press retry.")
-                                //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
-                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        fetcher.connect();
-                                    }
-                                }).show(); //funtion to actually create the alert
-                    }
-                });
             }
         });
 
@@ -79,15 +69,15 @@ public class CategorySelectionActivity extends PermissionActivity {
 
     public void onPermissionGranted(int requestCode) {
         TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        Button tempOverview = findViewById(R.id.CurTempHomeBtn);
+        //Button tempOverview = findViewById(R.id.CurTempHomeBtn);
 
         if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
             fetcher.connect();
-        } else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
+        } /*else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
             double temp = Double.parseDouble(fetcher.getData());
             temp = Math.floor(temp);
             tempOverview.setText((int)temp + "° / --°");
-        }
+        }*/
     }
 
 }

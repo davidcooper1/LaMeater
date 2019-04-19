@@ -286,7 +286,10 @@ public class TemperatureFetcher {
         dataLock.lock();
         String result;
         try {
-            result = new String(data);
+            if (data != null)
+                result = new String(data);
+            else
+                result = "0";
         } finally {
             dataLock.unlock();
         }

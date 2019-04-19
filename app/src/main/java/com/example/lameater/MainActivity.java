@@ -22,7 +22,7 @@ public class MainActivity extends PermissionActivity {
 
     public void openMeatChoices(View view) {
         MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
-        startActivity(new Intent(this, MeatSelectionActivity.class));
+        startActivity(new Intent(this, CategorySelectionActivity.class));
     }
 
     public void setCallbacks() {

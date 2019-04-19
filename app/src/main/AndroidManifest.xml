@@ -18,7 +18,7 @@
         android:name="com.example.lameater.MeatApp">
         <activity android:name=".BeefOptionsActivity"
             android:parentActivityName=".MeatSelectionActivity"/>
-        <activity android:name=".MeatSelectionActivity"
+        <activity android:name=".CategorySelectionActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
