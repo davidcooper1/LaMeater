@@ -61,7 +61,16 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected void onPermissionGranted(int requestCode) { }
 
-    protected void onPermissionDenied(int requestCode) { }
+    protected void onPermissionDenied(int requestCode) {
+        new AlertDialog.Builder(this)
+                .setTitle("Need Location Permission")
+                .setMessage("In order to automatically connect to the device, this app needs permission to access coarse location.")
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        obtainPermissions();
+                    }
+                }).show();
+    }
 
     protected void setCallbacks() { }
 
@@ -121,8 +130,7 @@ public class PermissionActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 fetcher.connect();
                             }
-                        })
-                        .show();
+                        }).show();
             } else {
                 fetcher.connect();
             }
