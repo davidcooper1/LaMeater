@@ -13,7 +13,7 @@ public class CategorySelection extends PermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meat_selection);
+        //setContentView(R.layout.activity_meat_selection);
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
         Cursor res = db.rawQuery("SELECT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
@@ -26,7 +26,7 @@ public class CategorySelection extends PermissionActivity {
             CategoryButton cbutton = new CategoryButton(this, (res.getInt(0)), (res.getString(1)));
         }
     }
-    
+
     protected void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
         final Button tempOverview = findViewById(R.id.CurTempHomeBtn);

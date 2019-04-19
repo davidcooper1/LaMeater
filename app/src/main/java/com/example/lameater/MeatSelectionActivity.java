@@ -13,21 +13,22 @@ import android.widget.Button;
 
 public class MeatSelectionActivity extends PermissionActivity {
     public static final String EXTRA_MESSAGE = "com.example.lameater.MESSAGE";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meat_selection);
-
+        //setContentView(R.layout.activity_beef_options);
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
+        Cursor res = db.rawQuery("SELECT * FROM Meats M", null);
 
         for (int i = 0; i < res.getCount(); i++) {
-            // Row controller: res.moveToPosition()
-            // To get cid: res.getInt(0)
-            // To get name: res.getString(1)
+            // Row controller: res.moveToPosition(i)
+            // To get cid: res.getInt(i)
+            // To get name: res.getString(i+2)
+            // To get mid: res.getInt(i+1)
+            // To get description: res.getString(i+3)
             res.moveToPosition(i);
-            CategoryButton cbutton = new CategoryButton(this, (res.getInt(0)), (res.getString(1)));
+            MeatButton mbutton = new MeatButton(this, res.getInt(i), (res.getInt(i+1)), (res.getString(i+2)));
+
         }
     }
 
