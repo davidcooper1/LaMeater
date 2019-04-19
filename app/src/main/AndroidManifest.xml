@@ -16,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="com.example.lameater.MeatApp">
-        <activity android:name=".SteakTempActivity"
-            android:parentActivityName=".BeefOptionsActivity"></activity>
         <activity android:name=".BeefOptionsActivity"
             android:parentActivityName=".MeatSelectionActivity"/>
         <activity android:name=".MeatSelectionActivity"

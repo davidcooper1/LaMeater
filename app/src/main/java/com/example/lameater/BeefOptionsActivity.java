@@ -21,7 +21,6 @@ public class BeefOptionsActivity extends PermissionActivity {
                 startActivity(new Intent(this, MeatSelectionActivity.class));
                 break;
             case R.id.SelBtnSteak:
-                startActivity(new Intent(this, SteakTempActivity.class));
                 break;
             case R.id.SelBtnBrisket:
                 //startActivity(new Intent(this, PoultryOptionsActivity.class));
