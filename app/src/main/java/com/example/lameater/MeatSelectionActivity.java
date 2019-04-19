@@ -19,7 +19,12 @@ public class MeatSelectionActivity extends PermissionActivity {
     }
 
     public void MeatSelected(View view) {
-        switch(view.getId()) {
+
+        //Creates a new button containing category ID and name
+        CategoryButton beef = new CategoryButton(this, 1, "Beef");
+
+
+        /*switch(view.getId()) {
             case R.id.SelBtnBeef:
                 MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
                 startActivity(new Intent(this, BeefOptionsActivity.class));
@@ -48,6 +53,7 @@ public class MeatSelectionActivity extends PermissionActivity {
 
 
         }
+        */
     }
 
     protected void setCallbacks() {
