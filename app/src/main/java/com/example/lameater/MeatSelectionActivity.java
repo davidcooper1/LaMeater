@@ -23,8 +23,11 @@ public class MeatSelectionActivity extends PermissionActivity {
         Cursor res = db.rawQuery("SELECT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
 
         for (int i = 0; i < res.getCount(); i++) {
+            // Row controller: res.moveToPosition()
             // To get cid: res.getInt(0)
             // To get name: res.getString(1)
+            res.moveToPosition(i);
+            CategoryButton cbutton = new CategoryButton(this, (res.getInt(0)), (res.getString(1)));
         }
     }
 
