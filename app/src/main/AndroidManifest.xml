@@ -20,6 +20,8 @@
             android:parentActivityName=".MeatSelectionActivity"/>
         <activity android:name=".CategorySelectionActivity"
             android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MeatSelectionActivity"
+            android:parentActivityName=".CategorySelectionActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

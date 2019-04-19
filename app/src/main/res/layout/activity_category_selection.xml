@@ -6,26 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test">
+        app:layout_constraintTop_toBottomOf="@+id/CurTempHomeBtn">
 
         <LinearLayout
             android:id="@+id/linear_layout"
@@ -33,5 +26,26 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"></LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/CurTempHomeBtn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button_qtr_circle"
+        android:text="--° / --°"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/category_select"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/CurTempHomeBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

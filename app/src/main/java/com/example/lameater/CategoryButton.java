@@ -9,12 +9,15 @@ import android.support.v7.widget.AppCompatButton;
 public class CategoryButton extends AppCompatButton {
 
     public static final String CATEGORY_ID = "CATEGORY_ID";
+    public static final String CATEGORY_NAME = "CATEGORY_NAME";
     private int cid;
+    private String name;
 
     public CategoryButton(Context c, int cid, String name) {
         super(c);
-        setText(name);
         this.cid = cid;
+        this.name = name;
+        setText(name);
 
         setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -25,8 +28,9 @@ public class CategoryButton extends AppCompatButton {
 
     public void launchSelectionActivity() {
         Context context = this.getContext();
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, MeatSelectionActivity.class);
         intent.putExtra(CATEGORY_ID, cid);
+        intent.putExtra(CATEGORY_NAME, name);
         context.startActivity(intent);
     }
 

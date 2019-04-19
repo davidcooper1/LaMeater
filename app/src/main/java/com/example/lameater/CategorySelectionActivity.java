@@ -22,10 +22,6 @@ public class CategorySelectionActivity extends PermissionActivity {
         LinearLayout linear_layout = scroll.findViewById(R.id.linear_layout);
         linear_layout.removeAllViews();
 
-        Button test = findViewById(R.id.test);
-        test.setText("Please Work");
-        test.setTextColor(0xFFFFFFFF);
-        test.setBackgroundResource(R.drawable.text_view_oval);
 
         for (int i = 0; i < res.getCount(); i++) {
             // Row controller: res.moveToPosition()
