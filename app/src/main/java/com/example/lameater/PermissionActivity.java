@@ -52,7 +52,7 @@ public class PermissionActivity extends AppCompatActivity {
                     receiverAdded = true;
 
                     onPermissionGranted(requestCode);
-                } else {
+                } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     onPermissionDenied(requestCode);
                 }
                 break;
@@ -62,6 +62,7 @@ public class PermissionActivity extends AppCompatActivity {
     protected void onPermissionGranted(int requestCode) { }
 
     protected void onPermissionDenied(int requestCode) {
+        Log.d("ALERT", "Alert made.");
         new AlertDialog.Builder(this)
                 .setTitle("Need Location Permission")
                 .setMessage("In order to automatically connect to the device, this app needs permission to access coarse location.")

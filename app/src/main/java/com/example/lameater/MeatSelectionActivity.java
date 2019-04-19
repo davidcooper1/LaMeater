@@ -2,6 +2,8 @@ package com.example.lameater;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,13 +18,17 @@ public class MeatSelectionActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meat_selection);
+
+        SQLiteDatabase db = MeaterData.getInstance().getDatabase();
+        Cursor res = db.rawQuery("SELECT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
+
+        for (int i = 0; i < res.getCount(); i++) {
+            // To get cid: res.getInt(0)
+            // To get name: res.getString(1)
+        }
     }
 
     public void MeatSelected(View view) {
-
-        //Creates a new button containing category ID and name
-        CategoryButton beef = new CategoryButton(this, 1, "Beef");
-
 
         /*switch(view.getId()) {
             case R.id.SelBtnBeef:
@@ -80,26 +86,6 @@ public class MeatSelectionActivity extends PermissionActivity {
                     }
                 });
                 fetcher.connect();
-            }
-        });
-
-        fetcher.setCallback(fetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
-            //Runs the alert dialog pop-up when LaMeater device is not found.
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        //Creates the Alert itself
-                        new AlertDialog.Builder(MeatSelectionActivity.this)
-                                .setTitle("Unable to Find LaMeater Device")
-                                .setMessage("Make sure device is turned on then press retry.")
-                                //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
-                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        fetcher.connect();
-                                    }
-                                }).show(); //funtion to actually create the alert
-                    }
-                });
             }
         });
 
