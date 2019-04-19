@@ -1,15 +1,13 @@
 package com.example.lameater;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
-public class CategorySelection extends PermissionActivity {
+public class CategorySelectionActivity extends PermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +58,7 @@ public class CategorySelection extends PermissionActivity {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         //Creates the Alert itself
-                        new AlertDialog.Builder(CategorySelection.this)
+                        new AlertDialog.Builder(CategorySelectionActivity.this)
                                 .setTitle("Unable to Find LaMeater Device")
                                 .setMessage("Make sure device is turned on then press retry.")
                                 //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
