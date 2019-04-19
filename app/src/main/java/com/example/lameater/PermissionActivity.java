@@ -94,7 +94,7 @@ public class PermissionActivity extends AppCompatActivity {
                         //Creates the Alert itself
                         new AlertDialog.Builder(PermissionActivity.this)
                                 .setTitle("Unable to Find LaMeater Device")
-                                .setMessage("Make sure device is turned on then press retry.")
+                                .setMessage("Make sure the device is turned on then press retry.")
                                 //Confirmation button. If pressed, device will attempt to reconnect to LaMeater.
                                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
@@ -112,13 +112,13 @@ public class PermissionActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT) {
-            switch (resultCode) {
-                case RESULT_OK :
-                    MeaterData.getInstance().getFetcher().connect();
-                    break;
-                case RESULT_CANCELED :
-                    break;
+            if (resultCode == RESULT_CANCELED) {
+                new AlertDialog.Builder(PermissionActivity.this)
+                        .setTitle("Bluetooth Needs to be Enabled")
+                        .setMessage("In order to connect to the device, Bluetooth must be enabled.")
+                        .show();
             }
+            MeaterData.getInstance().getFetcher().connect();
         }
     }
 
