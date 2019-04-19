@@ -14,7 +14,7 @@ public class BeefOptionsActivity extends PermissionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beef_options);
     }
-/*
+
     public void TypeSelected(View view) {
         switch (view.getId()) {
             case R.id.BeefTitle:
@@ -43,7 +43,7 @@ public class BeefOptionsActivity extends PermissionActivity {
 
         }
     }
-    */
+
 
     protected void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
