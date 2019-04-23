@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +22,7 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     protected final int REQUEST_ENABLE_BT = 2;
+    protected final int REQUEST_PERMISSION_SETTING = 4;
 
     private boolean receiverAdded = false;
 
@@ -63,14 +66,41 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected void onPermissionDenied(int requestCode) {
         Log.d("ALERT", "Alert made.");
-        new AlertDialog.Builder(this)
-                .setTitle("Need Location Permission")
-                .setMessage("In order to automatically connect to the device, this app needs permission to access coarse location.")
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        obtainPermissions();
-                    }
-                }).show();
+        if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                boolean shouldShowRationale = shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION);
+                if (!shouldShowRationale) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Need Location Permission")
+                            .setMessage("To enable Bluetooth discovery, this app must have location permissions.")
+                            .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                }
+                            }).show();
+                } else {
+                    showRationale(requestCode);
+                }
+            } else {
+                showRationale(requestCode);
+            }
+        }
+    }
+
+    protected void showRationale(int requestCode) {
+        if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Need Location Permission")
+                    .setMessage("To enable Bluetooth discovery, this app must have location permissions.")
+                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            obtainPermissions();
+                        }
+                    }).show();
+        }
     }
 
     protected void setCallbacks() { }
