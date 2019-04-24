@@ -49,23 +49,6 @@ public class MainActivity extends PermissionActivity {
                 fetcher.connect();
             }
         });
-
-        fetcher.setCallbacksEnabled(true);
-        fetcher.connect();
-    }
-
-    public void onPermissionGranted(int requestCode) {
-        TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        TextView tempOverview = findViewById(R.id.tempOverview);
-
-        if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
-            fetcher.connect();
-        } else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
-            double temp = Double.parseDouble(fetcher.getData());
-            temp = Math.floor(temp);
-            tempOverview.setText((int)temp + "° / --°");
-        }
-
     }
 
 }

@@ -57,23 +57,6 @@ public class CategorySelectionActivity extends PermissionActivity {
 
             }
         });
-
-        fetcher.setCallbacksEnabled(true);
-
-
-    }
-
-    public void onPermissionGranted(int requestCode) {
-        TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-        //Button tempOverview = findViewById(R.id.CurTempHomeBtn);
-
-        if (fetcher.getStatus() == fetcher.STATUS_DISCONNECTED) {
-            fetcher.connect();
-        } /*else if (fetcher.getStatus() == fetcher.STATUS_CONNECTED) {
-            double temp = Double.parseDouble(fetcher.getData());
-            temp = Math.floor(temp);
-            tempOverview.setText((int)temp + "° / --°");
-        }*/
     }
 
 }

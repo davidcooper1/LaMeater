@@ -26,9 +26,6 @@ public class PermissionActivity extends AppCompatActivity {
 
     private boolean receiverAdded = false;
 
-    protected void onPostCreate(Bundle savedInstanceBundle) {
-        super.onPostCreate(savedInstanceBundle);
-    }
 
     protected void obtainPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -39,9 +36,6 @@ public class PermissionActivity extends AppCompatActivity {
             );
         } else {
             TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-            registerReceiver(fetcher.getReceiver(), fetcher.getFilter());
-            receiverAdded = true;
-
             onPermissionGranted(PERMISSION_REQUEST_COARSE_LOCATION);
         }
     }
@@ -51,9 +45,6 @@ public class PermissionActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-                    registerReceiver(fetcher.getReceiver(), fetcher.getFilter());
-                    receiverAdded = true;
-
                     onPermissionGranted(requestCode);
                 } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     onPermissionDenied(requestCode);
@@ -62,7 +53,9 @@ public class PermissionActivity extends AppCompatActivity {
         }
     }
 
-    protected void onPermissionGranted(int requestCode) { }
+    protected void onPermissionGranted(int requestCode) {
+        MeaterData.getInstance().getFetcher().connect();
+    }
 
     protected void onPermissionDenied(int requestCode) {
         Log.d("ALERT", "Alert made.");
@@ -111,32 +104,26 @@ public class PermissionActivity extends AppCompatActivity {
 
     protected void setCallbacks() { }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        if (receiverAdded) {
-            unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
-            receiverAdded = false;
-        }
-    }
-
     protected void onStart() {
         super.onStart();
         if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
             BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
 
-        fetcher.setCallback(fetcher.CALLBACK_BLUETOOTH_DISABLED, new Runnable() {
+        fetcher.setCallback(TemperatureFetcher.CALLBACK_BLUETOOTH_DISABLED, new Runnable() {
             public void run() {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         });
 
-        fetcher.setCallback(fetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
+        fetcher.setCallback(TemperatureFetcher.CALLBACK_DEVICE_NOT_FOUND, new Runnable(){
             //Runs the alert dialog pop-up when LaMeater device is not found.
             public void run() {
                 runOnUiThread(new Runnable() {
                     public void run() {
+                        Log.d("DATA", "Device not found");
                         //Creates the Alert itself
                         new AlertDialog.Builder(PermissionActivity.this)
                                 .setTitle("Unable to Find LaMeater Device")
@@ -152,13 +139,28 @@ public class PermissionActivity extends AppCompatActivity {
             }
         });
 
-        fetcher.setCallback(fetcher.CALLBACK_NO_PERMISSION, new Runnable() {
+        fetcher.setCallback(TemperatureFetcher.CALLBACK_NO_PERMISSION, new Runnable() {
             public void run() {
                 obtainPermissions();
             }
         });
 
         setCallbacks();
+
+        int status = fetcher.getStatus();
+        if (status == TemperatureFetcher.STATUS_DISCONNECTED) {
+            if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
+                BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+            fetcher.setCallbacksEnabled(true);
+            fetcher.connect();
+        } else {
+            fetcher.setCallbacksEnabled(true);
+        }
+    }
+
+    public Intent registerReceiver(BroadcastReceiver receiver, IntentFilter filter) {
+        Log.d("DATA", "Receiver added");
+        return super.registerReceiver(receiver, filter);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
