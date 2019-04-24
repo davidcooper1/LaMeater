@@ -16,7 +16,7 @@ public class CategorySelectionActivity extends PermissionActivity {
         setContentView(R.layout.activity_category_selection);
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT DISTINCT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.mid", null);
+        Cursor res = db.rawQuery("SELECT DISTINCT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.cid", null);
 
         ScrollView scroll = findViewById(R.id.scroll);
         LinearLayout linear_layout = scroll.findViewById(R.id.linear_layout);
