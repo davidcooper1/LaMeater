@@ -32,7 +32,7 @@
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:background="@drawable/button_qtr_circle"
-        android:text="--° / --°"
+        android:text="-- / --"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

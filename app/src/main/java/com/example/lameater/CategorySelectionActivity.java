@@ -1,10 +1,12 @@
 package com.example.lameater;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -17,6 +19,14 @@ public class CategorySelectionActivity extends PermissionActivity {
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
         Cursor res = db.rawQuery("SELECT DISTINCT C.cid, C.name FROM Categories C, Meats M WHERE C.cid = M.cid", null);
+
+        Button current_temp = findViewById(R.id.CurTempHomeBtn);
+        current_temp.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+                startActivity(new Intent(CategorySelectionActivity.this, MainActivity.class));
+            }
+        });
 
         ScrollView scroll = findViewById(R.id.scroll);
         LinearLayout linear_layout = scroll.findViewById(R.id.linear_layout);

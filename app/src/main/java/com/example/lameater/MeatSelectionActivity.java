@@ -33,6 +33,21 @@ public class MeatSelectionActivity extends PermissionActivity {
         category_selected.setTextSize(21);
         category_selected.setBackgroundResource(R.drawable.text_view_oval);
 
+        category_selected.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+                startActivity(new Intent(MeatSelectionActivity.this, CategorySelectionActivity.class));
+            }
+        });
+
+        Button current_temp = findViewById(R.id.CurTempHomeBtn);
+        current_temp.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+                startActivity(new Intent(MeatSelectionActivity.this, MainActivity.class));
+            }
+        });
+
 
         ScrollView meat_scroll = findViewById(R.id.meat_scroll);
         LinearLayout linearlayout = meat_scroll.findViewById(R.id.linearlayout);
@@ -59,6 +74,7 @@ public class MeatSelectionActivity extends PermissionActivity {
             linearlayout.addView(btn);
 
         }
+
     }
 
     public void MeatSelected(View view) {
