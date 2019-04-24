@@ -18,7 +18,7 @@ import android.util.Log;
 
 // This class is used as a wrapper for activities.
 
-public class PermissionActivity extends AppCompatActivity {
+public abstract class PermissionActivity extends AppCompatActivity {
 
     protected final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     protected final int REQUEST_ENABLE_BT = 2;
