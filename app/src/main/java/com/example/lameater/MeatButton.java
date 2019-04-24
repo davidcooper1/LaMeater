@@ -32,7 +32,7 @@ public class MeatButton extends android.support.v7.widget.AppCompatButton {
 
     public void launchSelectionActivity() {
         Context context = this.getContext();
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, TempSelectActivity.class);
         intent.putExtra(CATEGORY_ID, cid);
         intent.putExtra(CATEGORY_NAME, cname);
         intent.putExtra(MEAT_ID, mid);
