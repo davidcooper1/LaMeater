@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MeatSelectionActivity">
 
-    <Button
-        android:id="@+id/SelBtnBeef"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="Beef"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/SelBtnPoultry"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selMeatTitle"
-        app:layout_constraintVertical_chainStyle="spread" />
-
     <TextView
         android:id="@+id/selMeatTitle"
         android:layout_width="wrap_content"
@@ -30,85 +15,8 @@
         android:text="@string/start_meat_selection"
         android:textAllCaps="false"
         android:textSize="28sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/SelBtnPoultry"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="Poultry"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/SelBtnPork"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnBeef" />
-
-    <Button
-        android:id="@+id/SelBtnPork"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="Pork"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/SelBtnFish"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnPoultry" />
-
-    <Button
-        android:id="@+id/SelBtnFish"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="Fish"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/SelBtnOther"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnPork" />
-
-    <Button
-        android:id="@+id/SelBtnOther"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="Other"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnFish" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:ems="10"
-        android:hint="@string/custom_temp_inpt"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SelBtnOther" />
-
-    <Button
-        android:id="@+id/CustTempSetBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:background="@drawable/button_oval"
-        android:onClick="MeatSelected"
-        android:text="@string/set_temp_button"
-        android:textColor="@android:color/white"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText"
-        app:layout_constraintStart_toEndOf="@+id/editText" />
 
     <Button
         android:id="@+id/CurTempHomeBtn"
@@ -128,5 +36,25 @@
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/meat_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selMeatTitle">
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

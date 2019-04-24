@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class MeatSelectionActivity extends PermissionActivity {
     public static final String EXTRA_MESSAGE = "com.example.lameater.MESSAGE";
@@ -31,6 +33,11 @@ public class MeatSelectionActivity extends PermissionActivity {
         category_selected.setTextSize(21);
         category_selected.setBackgroundResource(R.drawable.text_view_oval);
 
+
+        ScrollView meat_scroll = findViewById(R.id.meat_scroll);
+        LinearLayout linearlayout = meat_scroll.findViewById(R.id.linearlayout);
+        linearlayout.removeAllViews();
+
         for (int i = 0; i < res.getCount(); i++) {
             // Row controller: res.moveToPosition(i)
             // To get cid: res.getInt(0)
@@ -39,6 +46,17 @@ public class MeatSelectionActivity extends PermissionActivity {
             // To get description: res.getString(3)
             res.moveToPosition(i);
             MeatButton btn = new MeatButton(this, cid, categoryName, res.getInt(1), res.getString(2));
+
+            btn.setTextColor(0xFFFFFFFF);
+            //cbutton.setText("TextView " + String.valueOf(i));
+            btn.setBackgroundResource(R.drawable.button_oval);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(500,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(20,20,20,20);
+            btn.setLayoutParams(params);
+
+            linearlayout.addView(btn);
 
         }
     }

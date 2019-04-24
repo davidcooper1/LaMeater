@@ -34,7 +34,7 @@ public class CategorySelectionActivity extends PermissionActivity {
             //cbutton.setText("TextView " + String.valueOf(i));
             cbutton.setBackgroundResource(R.drawable.button_oval);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(500,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(20,20,20,20);
             cbutton.setLayoutParams(params);
