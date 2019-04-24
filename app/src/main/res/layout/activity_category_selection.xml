@@ -34,6 +34,7 @@
         android:background="@drawable/button_qtr_circle"
         android:text="--° / --°"
         android:textColor="@android:color/white"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
