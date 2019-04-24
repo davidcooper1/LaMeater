@@ -16,8 +16,6 @@ public class MainActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setCallbacks();
-        obtainPermissions();
     }
 
     public void openMeatChoices(View view) {
@@ -53,6 +51,7 @@ public class MainActivity extends PermissionActivity {
         });
 
         fetcher.setCallbacksEnabled(true);
+        fetcher.connect();
     }
 
     public void onPermissionGranted(int requestCode) {

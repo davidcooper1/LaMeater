@@ -1,5 +1,6 @@
 package com.example.lameater;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -7,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
 import java.io.InputStream;
@@ -30,6 +33,7 @@ public class TemperatureFetcher {
     public static final int CALLBACK_DATA_RECEIVED      = 0x00000008;
     public static final int CALLBACK_DEVICE_NOT_FOUND   = 0x00000010;
     public static final int CALLBACK_BLUETOOTH_DISABLED = 0x00000020;
+    public static final int CALLBACK_NO_PERMISSION      = 0x00000040;
 
     // These are the IDs for possible states:
     public static final int STATUS_CONNECTED          = 0x00000001;
@@ -62,12 +66,16 @@ public class TemperatureFetcher {
     private Runnable connectingRunnable;
     private Runnable deviceNotFoundRunnable;
     private Runnable bluetoothDisabledRunnable;
+    private Runnable noPermissionRunnable;
 
     // Used for synchronization of the data propery.
     private ReentrantLock dataLock;
 
     // Data string from bluetooth device.
     private String data;
+
+    // Context to check location permission.
+    private Context context;
 
     // Captures events related to bluetooth device discovery.
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -131,7 +139,8 @@ public class TemperatureFetcher {
 
     private final IntentFilter filter = new IntentFilter();
 
-    public TemperatureFetcher() {
+    public TemperatureFetcher(Context c) {
+        context = c;
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
@@ -153,9 +162,13 @@ public class TemperatureFetcher {
 
         BluetoothDevice device = findDeviceFromPaired();
         if (device != null) {
-            Log.d("EVENT", "Device found!");
             connectToDevice(device);
         } else {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+                attemptCallback(CALLBACK_NO_PERMISSION);
+                return;
+            }
             BluetoothAdapter.getDefaultAdapter().startDiscovery();
         }
     }
@@ -242,6 +255,11 @@ public class TemperatureFetcher {
 
             case CALLBACK_BLUETOOTH_DISABLED :
                 bluetoothDisabledRunnable = callback;
+                break;
+
+            case CALLBACK_NO_PERMISSION :
+                noPermissionRunnable = callback;
+                break;
         }
     }
 
@@ -272,6 +290,8 @@ public class TemperatureFetcher {
                         case CALLBACK_BLUETOOTH_DISABLED:
                             callbackRunnable = bluetoothDisabledRunnable;
                             break;
+                        case CALLBACK_NO_PERMISSION:
+                            callbackRunnable = noPermissionRunnable;
                     }
                     callback = new Thread(callbackRunnable);
                     callback.start();

@@ -72,12 +72,18 @@ public class PermissionActivity extends AppCompatActivity {
                 if (!shouldShowRationale) {
                     new AlertDialog.Builder(this)
                             .setTitle("Need Location Permission")
-                            .setMessage("To enable Bluetooth discovery, this app must have location permissions.")
+                            .setMessage("To enable Bluetooth discovery, this app must have location permissions. If connecting manually, the PIN is 1234.")
                             .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                                     Uri uri = Uri.fromParts("package", getPackageName(), null);
                                     intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                }
+                            })
+                            .setNegativeButton("Manually Connect", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                                     startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
                                 }
                             }).show();
@@ -146,8 +152,13 @@ public class PermissionActivity extends AppCompatActivity {
             }
         });
 
+        fetcher.setCallback(fetcher.CALLBACK_NO_PERMISSION, new Runnable() {
+            public void run() {
+                obtainPermissions();
+            }
+        });
+
         setCallbacks();
-        obtainPermissions();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
