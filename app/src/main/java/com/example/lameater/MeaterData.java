@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class MeaterData {
 
     private static MeaterData instance;
+    private static MeaterData input;
     private final TemperatureFetcher fetcher;
     private final DatabaseHelper dbHelp;
     private final SQLiteDatabase db;
@@ -22,6 +23,13 @@ public class MeaterData {
             instance = new MeaterData();
         return instance;
     }
+
+    public static MeaterData getInput(){
+        if (input == null)
+            input = new MeaterData();
+        return input;
+    }
+
 
     public TemperatureFetcher getFetcher() {
         return fetcher;
