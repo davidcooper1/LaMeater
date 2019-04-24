@@ -11,7 +11,7 @@ public class MeaterData {
     private final SQLiteDatabase db;
 
     private MeaterData() {
-        fetcher = new TemperatureFetcher();
+        fetcher = new TemperatureFetcher(MeatApp.getAppContext());
         Context context = MeatApp.getAppContext();
         dbHelp = new DatabaseHelper(context);
         db = dbHelp.getReadableDatabase();
