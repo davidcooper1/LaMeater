@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -24,7 +25,7 @@ public class CategorySelectionActivity extends PermissionActivity {
         current_temp.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
-                startActivity(new Intent(CategorySelectionActivity.this, MainActivity.class));
+                startActivity(new Intent(CategorySelectionActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
@@ -67,6 +68,21 @@ public class CategorySelectionActivity extends PermissionActivity {
 
             }
         });
+    }
+
+    public void useCustomTemp(View view) {
+        EditText temp = findViewById(R.id.customTemp);
+        String input = temp.getText().toString();
+
+        MeaterData data = MeaterData.getInstance();
+
+        if (!input.equals("")) {
+            data.setMeatName("Custom");
+            data.setTargetTemp(Integer.parseInt(input));
+            data.setMeatSelected(true);
+
+            startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        }
     }
 
 }

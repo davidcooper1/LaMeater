@@ -33,12 +33,24 @@ public class MeaterData {
         return meatSelected;
     }
 
+    public void setMeatSelected(boolean selected) {
+        meatSelected = selected;
+    }
+
     public String getMeatName() {
         return meatName;
     }
 
+    public void setMeatName(String name) {
+        meatName = name;
+    }
+
     public int getTargetTemp() {
         return targetTemp;
+    }
+
+    public void setTargetTemp(int temp) {
+        targetTemp = temp;
     }
 
     public TemperatureFetcher getFetcher() {

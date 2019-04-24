@@ -44,7 +44,7 @@ public class MeatSelectionActivity extends PermissionActivity {
         current_temp.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
-                startActivity(new Intent(MeatSelectionActivity.this, MainActivity.class));
+                startActivity(new Intent(MeatSelectionActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
