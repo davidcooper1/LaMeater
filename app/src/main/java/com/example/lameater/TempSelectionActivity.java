@@ -5,8 +5,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -61,26 +63,37 @@ public class TempSelectionActivity extends PermissionActivity {
         Spinner doneness = findViewById(R.id.spinner);
 
 
-        ArrayAdapter<TemperatureOption> temps = new ArrayAdapter<TemperatureOption>(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter<TemperatureOption> temps = new ArrayAdapter<TemperatureOption>(this, android.R.layout.simple_spinner_item);
+        final TextView recommended = findViewById(R.id.recmndTemp);
+        final EditText target = findViewById(R.id.targetTemp);
 
         for (int i = 0; i < res.getCount(); i++) {
             res.moveToPosition(i);
+            int tid = res.getInt(2);
+            String name = res.getString(3);
+            int temp = res.getInt(4);
 
-
-
-
+            if (tid == 0) {
+                recommended.setText("" + temp);
+                target.setText("" + temp);
+            }
+            temps.add(new TemperatureOption(name, temp));
         }
 
-            String tempName = res.getString(3);
-            int recTemp = res.getInt(4);
+        doneness.setAdapter(temps);
 
+        doneness.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
+                TemperatureOption option = (TemperatureOption)adapter.getItemAtPosition(position);
 
-            TextView recommended = findViewById(R.id.recmndTemp);
-            recommended.setText(recTemp + " °F");
+                recommended.setText("" + option.getTemp());
+                target.setText("" + option.getTemp());
+            }
 
-            TextView target = findViewById(R.id.targetTemp);
-            target.setHint(recTemp + "");
+            public void onNothingSelected(AdapterView<?> adapter) {
 
+            }
+        });
 
         res.close();
     }
