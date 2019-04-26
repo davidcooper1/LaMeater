@@ -52,6 +52,8 @@ public class CategorySelectionActivity extends PermissionActivity {
 
             linear_layout.addView(cbutton);
         }
+
+        res.close();
     }
 
     protected void setCallbacks() {

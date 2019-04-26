@@ -24,7 +24,7 @@ public class MeatSelectionActivity extends PermissionActivity {
         String categoryName = getIntent().getStringExtra(CategoryButton.CATEGORY_NAME);
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM Meats M WHERE cid = ?", new String[] {cid + ""});
+        Cursor res = db.rawQuery("SELECT * FROM Meats M WHERE cid = ?;", new String[] {cid + ""});
 
         //Changes button at the top of the activity to the category name, and adds formatting
         Button category_selected = findViewById(R.id.category_selected);
@@ -60,7 +60,7 @@ public class MeatSelectionActivity extends PermissionActivity {
             // To get mid: res.getInt(1)
             // To get description: res.getString(3)
             res.moveToPosition(i);
-            MeatButton btn = new MeatButton(this, cid, categoryName, res.getInt(1), res.getString(2));
+            MeatButton btn = new MeatButton(this, cid, categoryName, res.getInt(1), res.getString(2), res.getString(3));
 
             btn.setTextColor(0xFFFFFFFF);
             //cbutton.setText("TextView " + String.valueOf(i));
@@ -74,6 +74,8 @@ public class MeatSelectionActivity extends PermissionActivity {
             linearlayout.addView(btn);
 
         }
+
+        res.close();
 
     }
 

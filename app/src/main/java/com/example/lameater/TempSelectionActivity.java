@@ -5,22 +5,27 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-public class TempSelectActivity extends PermissionActivity {
+public class TempSelectionActivity extends PermissionActivity {
     public static final String EXTRA_MESSAGE = "com.example.lameater.MESSAGE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temp_select);
 
-        int mid = getIntent().getIntExtra(MeatButton.MEAT_ID, -1);
-        int cid = getIntent().getIntExtra(MeatButton.CATEGORY_ID, -1);
-        String meatName = getIntent().getStringExtra(MeatButton.MEAT_NAME);
-        String categoryName = getIntent().getStringExtra(MeatButton.CATEGORY_NAME);
+        Intent intent = getIntent();
+        int mid = intent.getIntExtra(MeatButton.MEAT_ID, -1);
+        int cid = intent.getIntExtra(MeatButton.CATEGORY_ID, -1);
+        String meatName = intent.getStringExtra(MeatButton.MEAT_NAME);
+        String categoryName = intent.getStringExtra(MeatButton.CATEGORY_NAME);
+        String description = intent.getStringExtra(MeatButton.MEAT_DESCRIPTION);
 
         SQLiteDatabase db = MeaterData.getInstance().getDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM Meats M WHERE cid = ?", new String[] {mid + ""});
+        Cursor res = db.rawQuery("SELECT * FROM CookTemps WHERE cid = ? AND mid = ? ORDER BY tid ASC;", new String[] {cid + "", mid + ""});
 
 
         Button category_title = findViewById(R.id.categoryTitle);
@@ -32,7 +37,7 @@ public class TempSelectActivity extends PermissionActivity {
         category_title.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
-                startActivity(new Intent(TempSelectActivity.this, CategorySelectionActivity.class));
+                startActivity(new Intent(TempSelectionActivity.this, CategorySelectionActivity.class));
             }
         });
 
@@ -46,12 +51,41 @@ public class TempSelectActivity extends PermissionActivity {
         current_temp.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
-                startActivity(new Intent(TempSelectActivity.this, MainActivity.class));
+                startActivity(new Intent(TempSelectionActivity.this, MainActivity.class));
             }
         });
 
+        TextView meatDesc = findViewById(R.id.meatDescription);
+        meatDesc.setText(description);
 
+        Spinner doneness = findViewById(R.id.spinner);
+
+
+        ArrayAdapter<TemperatureOption> temps = new ArrayAdapter<TemperatureOption>(this, android.R.layout.simple_list_item_1);
+
+        for (int i = 0; i < res.getCount(); i++) {
+            res.moveToPosition(i);
+
+
+
+
+        }
+
+            String tempName = res.getString(3);
+            int recTemp = res.getInt(4);
+
+
+            TextView recommended = findViewById(R.id.recmndTemp);
+            recommended.setText(recTemp + " °F");
+
+            TextView target = findViewById(R.id.targetTemp);
+            target.setHint(recTemp + "");
+
+
+        res.close();
     }
+
+
 
 
     protected void setCallbacks() {

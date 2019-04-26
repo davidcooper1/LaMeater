@@ -20,7 +20,7 @@
             android:parentActivityName=".MeatSelectionActivity"/>
         <activity android:name=".CategorySelectionActivity"
             android:parentActivityName=".MainActivity"/>
-        <activity android:name=".TempSelectActivity"
+        <activity android:name=".TempSelectionActivity"
             android:parentActivityName=".CategorySelectionActivity"/>
         <activity android:name=".MeatSelectionActivity"
             android:parentActivityName=".CategorySelectionActivity"/>
