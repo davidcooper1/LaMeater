@@ -29,13 +29,13 @@ public class MeatSelectionActivity extends PermissionActivity {
         //Changes button at the top of the activity to the category name, and adds formatting
         Button category_selected = findViewById(R.id.category_selected);
         category_selected.setText(categoryName);
-        category_selected.setTextColor(0xFFFFFFFF);
+        category_selected.setTextColor(0xFFFFFFFF);                                         //Format already created category button using drawable
         category_selected.setTextSize(21);
         category_selected.setBackgroundResource(R.drawable.text_view_oval);
 
         category_selected.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);           //Make the category button return to the category selection page
                 startActivity(new Intent(MeatSelectionActivity.this, CategorySelectionActivity.class));
             }
         });
@@ -43,15 +43,15 @@ public class MeatSelectionActivity extends PermissionActivity {
         Button current_temp = findViewById(R.id.CurTempHomeBtn);
         current_temp.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);           //Make the temperature display return to the home page
                 startActivity(new Intent(MeatSelectionActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
 
 
         ScrollView meat_scroll = findViewById(R.id.meat_scroll);
-        LinearLayout linearlayout = meat_scroll.findViewById(R.id.linearlayout);
-        linearlayout.removeAllViews();
+        LinearLayout linearlayout = meat_scroll.findViewById(R.id.linearlayout);            //access the scrollView and linearLayout to allow button placement to
+        linearlayout.removeAllViews();                                                      //be dynamic
 
         for (int i = 0; i < res.getCount(); i++) {
             // Row controller: res.moveToPosition(i)

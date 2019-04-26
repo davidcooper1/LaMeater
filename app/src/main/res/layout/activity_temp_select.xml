@@ -43,38 +43,40 @@
 
     <ImageView
         android:id="@+id/meatView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="96dp"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="128dp"
         app:layout_constraintBottom_toTopOf="@+id/meatDescription"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CurTempHomeBtn"
+        app:layout_constraintTop_toBottomOf="@+id/meatTitle"
         app:srcCompat="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/meatDescription"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="96dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:text="TextView balh blah blah blah blah ablha blah blah blah ablha blah ablah blah ablha ablha blah balha blahbalha blah "
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/meatView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meatView" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="216dp"
         android:layout_height="24dp"
+        android:layout_marginStart="96dp"
         android:layout_marginEnd="96dp"
         app:layout_constraintBottom_toTopOf="@+id/recommend"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/meatDescription"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/meatDescription" />
 
     <TextView
@@ -92,24 +94,24 @@
         android:layout_height="wrap_content"
         android:text="Target:"
         app:layout_constraintBottom_toTopOf="@+id/tempSelStart"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@+id/recommend"
         app:layout_constraintTop_toBottomOf="@+id/recommend" />
 
     <EditText
         android:id="@+id/targetTemp"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Temp (°F)"
+        android:hint="Temp"
         android:inputType="number"
+        android:textAlignment="textEnd"
         app:layout_constraintBaseline_toBaselineOf="@+id/target"
-        app:layout_constraintEnd_toEndOf="@+id/recmndTemp" />
+        app:layout_constraintEnd_toStartOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/recmndTemp"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text=" RecTemp"
         android:textAlignment="viewStart"
         android:textSize="18sp"
@@ -120,7 +122,7 @@
         android:id="@+id/tempSelStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/button_oval"
         android:text="Start"
         android:textColor="@android:color/white"
@@ -129,4 +131,13 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/target" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="°F"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/targetTemp"
+        app:layout_constraintEnd_toEndOf="@+id/recmndTemp" />
 </android.support.constraint.ConstraintLayout>
