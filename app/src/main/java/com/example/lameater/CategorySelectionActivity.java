@@ -56,18 +56,30 @@ public class CategorySelectionActivity extends PermissionActivity {
 
     protected void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+        final Button tempOverview = findViewById(R.id.CurTempHomeBtn);
 
         fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
             public void run() {
-
+                tempOverview.post(new Runnable() {
+                    public void run() {
+                        int temp = (int)Double.parseDouble(fetcher.getData());
+                        tempOverview.setText(getString(R.string.temp, temp));
+                    }
+                });
             }
         });
 
         fetcher.setCallback(fetcher.CALLBACK_DISCONNECT, new Runnable() {
             public void run() {
-
+                tempOverview.post(new Runnable() {
+                    public void run() {
+                        tempOverview.setText("--");
+                    }
+                });
+                fetcher.connect();
             }
         });
+
     }
 
     public void useCustomTemp(View view) {

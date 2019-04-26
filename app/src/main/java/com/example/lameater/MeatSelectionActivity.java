@@ -85,9 +85,8 @@ public class MeatSelectionActivity extends PermissionActivity {
             public void run() {
                 tempOverview.post(new Runnable() {
                     public void run() {
-                        double temp = Double.parseDouble(fetcher.getData());
-                        temp = Math.floor(temp);
-                        tempOverview.setText((int)temp + "° / --°");
+                        int temp = (int)Double.parseDouble(fetcher.getData());
+                        tempOverview.setText(getString(R.string.temp, temp));
                     }
                 });
             }
@@ -97,14 +96,13 @@ public class MeatSelectionActivity extends PermissionActivity {
             public void run() {
                 tempOverview.post(new Runnable() {
                     public void run() {
-                        tempOverview.setText("--° / --°");
+                        tempOverview.setText("--");
                     }
                 });
                 fetcher.connect();
             }
         });
 
-        fetcher.setCallbacksEnabled(true);
 
 
     }
