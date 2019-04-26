@@ -30,14 +30,28 @@ public class MainActivity extends PermissionActivity {
 
         fetcher.setCallback(fetcher.CALLBACK_DATA_RECEIVED, new Runnable() {
             public void run() {
-                tempOverview.post(new Runnable() {
+                runOnUiThread(new Runnable() {
                     public void run() {
                         MeaterData data = MeaterData.getInstance();
                         int temp = (int)Double.parseDouble(fetcher.getData());
-                        if (data.isMeatSelected())
-                            tempOverview.setText(getString(R.string.temp_selected, temp, data.getTargetTemp()));
-                        else
+                        if (data.isMeatSelected()) {
+                            if (temp >= data.getTargetTemp()) {
+                                data.setMeatSelected(false);
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Temperature Reached")
+                                        .setMessage("Your food is ready to eat!")
+                                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        }).show();
+                                tempOverview.setText(getString(R.string.temp, temp));
+                            } else {
+                                tempOverview.setText(getString(R.string.temp_selected, temp, data.getTargetTemp()));
+                            }
+                        } else {
                             tempOverview.setText(getString(R.string.temp, temp));
+                        }
                     }
                 });
             }

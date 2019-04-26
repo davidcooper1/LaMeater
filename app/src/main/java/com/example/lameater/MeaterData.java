@@ -3,6 +3,8 @@ package com.example.lameater;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class MeaterData {
 
     private static MeaterData instance;
@@ -14,11 +16,14 @@ public class MeaterData {
     private String meatName;
     private int targetTemp;
 
+    private ReentrantLock selectedLock;
+
     private MeaterData() {
         fetcher = new TemperatureFetcher(MeatApp.getAppContext());
         Context context = MeatApp.getAppContext();
         dbHelp = new DatabaseHelper(context);
         db = dbHelp.getReadableDatabase();
+        selectedLock = new ReentrantLock();
 
         meatSelected = false;
     }
@@ -30,11 +35,26 @@ public class MeaterData {
     }
 
     public boolean isMeatSelected() {
-        return meatSelected;
+        boolean selected;
+        selectedLock.lock();
+
+        try {
+            selected = meatSelected;
+        } finally {
+            selectedLock.unlock();
+        }
+
+        return selected;
     }
 
     public void setMeatSelected(boolean selected) {
-        meatSelected = selected;
+        selectedLock.lock();
+
+        try {
+            meatSelected = selected;
+        } finally {
+            selectedLock.unlock();
+        }
     }
 
     public String getMeatName() {
