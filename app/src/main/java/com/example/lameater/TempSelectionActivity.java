@@ -63,7 +63,7 @@ public class TempSelectionActivity extends PermissionActivity {
         Spinner doneness = findViewById(R.id.spinner);
 
 
-        ArrayAdapter<TemperatureOption> temps = new ArrayAdapter<TemperatureOption>(this, android.R.layout.simple_spinner_item);
+        ArrayAdapter<TemperatureOption> temps = new ArrayAdapter<TemperatureOption>(this, android.R.layout.simple_spinner_dropdown_item);
         final TextView recommended = findViewById(R.id.recmndTemp);
         final EditText target = findViewById(R.id.targetTemp);
 
@@ -74,7 +74,7 @@ public class TempSelectionActivity extends PermissionActivity {
             int temp = res.getInt(4);
 
             if (tid == 0) {
-                recommended.setText("" + temp);
+                recommended.setText(temp + " °F");
                 target.setText("" + temp);
             }
             temps.add(new TemperatureOption(name, temp));
@@ -86,7 +86,7 @@ public class TempSelectionActivity extends PermissionActivity {
             public void onItemSelected(AdapterView<?> adapter, View view, int position, long id) {
                 TemperatureOption option = (TemperatureOption)adapter.getItemAtPosition(position);
 
-                recommended.setText("" + option.getTemp());
+                recommended.setText(option.getTemp() + " °F");
                 target.setText("" + option.getTemp());
             }
 
