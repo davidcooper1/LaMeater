@@ -16,7 +16,7 @@
         android:background="@drawable/text_view_circle"
         android:gravity="center"
         android:padding="8dp"
-        android:text="--° / --°"
+        android:text="--"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/selMeatBtn"
