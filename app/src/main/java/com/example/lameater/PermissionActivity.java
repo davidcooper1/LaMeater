@@ -79,7 +79,16 @@ public abstract class PermissionActivity extends AppCompatActivity {
                                     Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                                     startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
                                 }
-                            }).show();
+                            })
+                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                public void onCancel(DialogInterface dialog) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                                }
+                            })
+                            .show();
                 } else {
                     showRationale(requestCode);
                 }
@@ -98,7 +107,13 @@ public abstract class PermissionActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             obtainPermissions();
                         }
-                    }).show();
+                    })
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        public void onCancel(DialogInterface dialog) {
+                            obtainPermissions();
+                        }
+                    })
+                    .show();
         }
     }
 
@@ -133,7 +148,13 @@ public abstract class PermissionActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         fetcher.connect();
                                     }
-                                }).show(); // Create the alert
+                                })
+                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    public void onCancel(DialogInterface dialog) {
+                                        fetcher.connect();
+                                    }
+                                })
+                                .show(); // Create the alert
                     }
                 });
             }
@@ -174,7 +195,13 @@ public abstract class PermissionActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 fetcher.connect();
                             }
-                        }).show();
+                        })
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            public void onCancel(DialogInterface dialog) {
+                                fetcher.connect();
+                            }
+                        })
+                        .show();
             } else {
                 fetcher.connect();
             }
