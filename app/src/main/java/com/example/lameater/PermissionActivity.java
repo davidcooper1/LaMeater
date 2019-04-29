@@ -36,7 +36,6 @@ public abstract class PermissionActivity extends AppCompatActivity {
                     PERMISSION_REQUEST_COARSE_LOCATION
             );
         } else {
-            TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
             onPermissionGranted(PERMISSION_REQUEST_COARSE_LOCATION);
         }
     }
@@ -45,7 +44,6 @@ public abstract class PermissionActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
                     onPermissionGranted(requestCode);
                 } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     onPermissionDenied(requestCode);
@@ -124,9 +122,6 @@ public abstract class PermissionActivity extends AppCompatActivity {
         super.onStart();
 
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
-
-        if (fetcher.getStatus() == TemperatureFetcher.STATUS_SEARCHING == BluetoothAdapter.getDefaultAdapter().isDiscovering())
-            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
 
         fetcher.setCallback(TemperatureFetcher.CALLBACK_BLUETOOTH_DISABLED, new Runnable() {
             public void run() {
