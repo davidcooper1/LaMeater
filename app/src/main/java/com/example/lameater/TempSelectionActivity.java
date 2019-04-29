@@ -99,9 +99,8 @@ public class TempSelectionActivity extends PermissionActivity {
             public void run() {
                 tempOverview.post(new Runnable() {
                     public void run() {
-                        //int temp = (int)Double.parseDouble(fetcher.getData());
-                        //tempOverview.setText(getString(R.string.temp, temp));
-                        tempOverview.setText("" + wellDoneTemp);
+                        int temp = (int)Double.parseDouble(fetcher.getData());
+                        tempOverview.setText(getString(R.string.temp, temp));
                     }
                 });
             }
