@@ -121,10 +121,11 @@ public abstract class PermissionActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
-            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
 
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();
+
+        if (fetcher.getStatus() == TemperatureFetcher.STATUS_SEARCHING == BluetoothAdapter.getDefaultAdapter().isDiscovering())
+            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
 
         fetcher.setCallback(TemperatureFetcher.CALLBACK_BLUETOOTH_DISABLED, new Runnable() {
             public void run() {
