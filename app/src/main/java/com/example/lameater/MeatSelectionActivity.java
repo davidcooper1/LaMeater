@@ -33,22 +33,6 @@ public class MeatSelectionActivity extends PermissionActivity {
         category_selected.setTextSize(21);
         category_selected.setBackgroundResource(R.drawable.text_view_oval);
 
-        category_selected.setOnClickListener(new View.OnClickListener() {
-            public void onClick (View v) {
-                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);           //Make the category button return to the category selection page
-                startActivity(new Intent(MeatSelectionActivity.this, CategorySelectionActivity.class));
-            }
-        });
-
-        Button current_temp = findViewById(R.id.CurTempHomeBtn);
-        current_temp.setOnClickListener(new View.OnClickListener() {
-            public void onClick (View v) {
-                MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);           //Make the temperature display return to the home page
-                startActivity(new Intent(MeatSelectionActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-        });
-
-
         ScrollView meat_scroll = findViewById(R.id.meat_scroll);
         LinearLayout linearlayout = meat_scroll.findViewById(R.id.linearlayout);            //access the scrollView and linearLayout to allow button placement to
         linearlayout.removeAllViews();                                                      //be dynamic

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CategorySelectionActivity">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -32,7 +31,8 @@
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:background="@drawable/button_qtr_circle"
-        android:text="-- / --"
+        android:text="--"
+        android:onClick="loadMainActivity"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

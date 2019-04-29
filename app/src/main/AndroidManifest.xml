@@ -21,7 +21,7 @@
         <activity android:name=".CategorySelectionActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".TempSelectionActivity"
-            android:parentActivityName=".CategorySelectionActivity"/>
+            android:parentActivityName=".MeatSelectionActivity"/>
         <activity android:name=".MeatSelectionActivity"
             android:parentActivityName=".CategorySelectionActivity"/>
         <activity android:name=".MainActivity">

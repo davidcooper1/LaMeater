@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 // This class is used as a wrapper for activities.
 
@@ -215,6 +216,20 @@ public abstract class PermissionActivity extends AppCompatActivity {
             unregisterReceiver(MeaterData.getInstance().getFetcher().getReceiver());
             receiverAdded = false;
         }
+    }
+
+    public void loadMainActivity(View view) {
+        MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+        startActivity(new Intent(this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+    }
+
+    public void goBack(View view) {
+        onBackPressed();
+    }
+
+    public void onBackPressed() {
+        MeaterData.getInstance().getFetcher().setCallbacksEnabled(false);
+        super.onBackPressed();
     }
 
 }
