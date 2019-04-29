@@ -3,9 +3,7 @@ package com.example.lameater;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,16 +17,18 @@ public class BeefOptionsActivity extends PermissionActivity {
 
     public void TypeSelected(View view) {
         switch (view.getId()) {
-            case R.id.SelBtnBreast:
-                startActivity(new Intent(this, SteakTempActivity.class));
+            case R.id.BeefTitle:
+                startActivity(new Intent(this, MeatSelectionActivity.class));
                 break;
-            case R.id.SelBtnThigh:
+            case R.id.SelBtnSteak:
+                break;
+            case R.id.SelBtnBrisket:
                 //startActivity(new Intent(this, PoultryOptionsActivity.class));
                 break;
-            case R.id.SelBtnWing:
+            case R.id.SelBtnRibs:
                 //startActivity(new Intent(this, PorkOptionsActivity.class));
                 break;
-            case R.id.SelBtnWholes:
+            case R.id.SelBtnGround:
                 //startActivity(new Intent(this, FishOptionsActivity.class));
                 break;
             case R.id.SelBtnSausage:
@@ -43,6 +43,7 @@ public class BeefOptionsActivity extends PermissionActivity {
 
         }
     }
+
 
     protected void setCallbacks() {
         final TemperatureFetcher fetcher = MeaterData.getInstance().getFetcher();

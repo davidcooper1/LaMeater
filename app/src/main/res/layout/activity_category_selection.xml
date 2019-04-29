@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/customTemp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CurTempHomeBtn">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/CurTempHomeBtn"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:background="@drawable/button_qtr_circle"
+        android:text="--"
+        android:onClick="loadMainActivity"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/category_select"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/CurTempHomeBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/customTemp"
+        android:layout_width="108dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="Input Temp"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/scroll" />
+
+    <Button
+        android:id="@+id/SetCustomTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:background="@drawable/button_oval"
+        android:onClick="useCustomTemp"
+        android:text="Set"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(°F)"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/customTemp"
+        app:layout_constraintStart_toEndOf="@+id/customTemp" />
+
+
+</android.support.constraint.ConstraintLayout>

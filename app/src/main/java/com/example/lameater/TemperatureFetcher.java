@@ -1,5 +1,6 @@
 package com.example.lameater;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -7,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
 import java.io.InputStream;
@@ -24,17 +27,20 @@ public class TemperatureFetcher {
     private static final UUID SERIAL_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // These are the IDs for callback functions.
-    public static final int CALLBACK_DISCONNECT       = 0x00000001;
-    public static final int CALLBACK_CONNECT          = 0x00000002;
-    public static final int CALLBACK_CONNECTING       = 0x00000004;
-    public static final int CALLBACK_DATA_RECEIVED    = 0x00000008;
-    public static final int CALLBACK_DEVICE_NOT_FOUND = 0x00000010;
+    public static final int CALLBACK_DISCONNECT         = 0x00000001;
+    public static final int CALLBACK_CONNECT            = 0x00000002;
+    public static final int CALLBACK_CONNECTING         = 0x00000004;
+    public static final int CALLBACK_DATA_RECEIVED      = 0x00000008;
+    public static final int CALLBACK_DEVICE_NOT_FOUND   = 0x00000010;
+    public static final int CALLBACK_BLUETOOTH_DISABLED = 0x00000020;
+    public static final int CALLBACK_NO_PERMISSION      = 0x00000040;
 
     // These are the IDs for possible states:
-    public static final int STATUS_CONNECTED          = 0x00000001;
-    public static final int STATUS_DEVICE_FOUND       = 0x00000002;
-    public static final int STATUS_CONNECTING         = 0x00000004;
-    public static final int STATUS_DISCONNECTED       = 0x00000008;
+    public static final int STATUS_CONNECTED            = 0x00000001;
+    public static final int STATUS_DEVICE_FOUND         = 0x00000002;
+    public static final int STATUS_CONNECTING           = 0x00000004;
+    public static final int STATUS_DISCONNECTED         = 0x00000008;
+    public static final int STATUS_SEARCHING            = 0x00000010;
 
     // Stores the status of the device discovery and connection process.
     private int status;
@@ -60,12 +66,17 @@ public class TemperatureFetcher {
     private Runnable connectRunnable;
     private Runnable connectingRunnable;
     private Runnable deviceNotFoundRunnable;
+    private Runnable bluetoothDisabledRunnable;
+    private Runnable noPermissionRunnable;
 
     // Used for synchronization of the data propery.
     private ReentrantLock dataLock;
 
     // Data string from bluetooth device.
     private String data;
+
+    // Context to check location permission.
+    private Context context;
 
     // Captures events related to bluetooth device discovery.
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -120,8 +131,9 @@ public class TemperatureFetcher {
                     }
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                if (getStatus() == STATUS_DISCONNECTED) {
+                if (getStatus() == STATUS_SEARCHING) {
                     attemptCallback(CALLBACK_DEVICE_NOT_FOUND);
+                    setStatus(STATUS_DISCONNECTED);
                 }
             }
         }
@@ -129,25 +141,41 @@ public class TemperatureFetcher {
 
     private final IntentFilter filter = new IntentFilter();
 
-    public TemperatureFetcher() {
+    public TemperatureFetcher(Context c) {
+        context = c;
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
         callbackLock = new ReentrantLock();
         dataLock = new ReentrantLock();
         statusLock = new ReentrantLock();
+
+        callbacksEnabled = false;
         status = STATUS_DISCONNECTED;
     }
 
     // Checks if LaMeater was already paired if not try to find and connect to it.
     public void connect() {
+        Log.d("EVENT", "connect() called");
         setStatus(STATUS_DISCONNECTED);
+
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+            attemptCallback(CALLBACK_BLUETOOTH_DISABLED);
+            return;
+        }
+
         BluetoothDevice device = findDeviceFromPaired();
         if (device != null) {
-            Log.d("EVENT", "Device found!");
             connectToDevice(device);
         } else {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+                attemptCallback(CALLBACK_NO_PERMISSION);
+                return;
+            }
+            setStatus(STATUS_SEARCHING);
             BluetoothAdapter.getDefaultAdapter().startDiscovery();
         }
     }
@@ -231,6 +259,14 @@ public class TemperatureFetcher {
             case CALLBACK_DEVICE_NOT_FOUND :
                 deviceNotFoundRunnable = callback;
                 break;
+
+            case CALLBACK_BLUETOOTH_DISABLED :
+                bluetoothDisabledRunnable = callback;
+                break;
+
+            case CALLBACK_NO_PERMISSION :
+                noPermissionRunnable = callback;
+                break;
         }
     }
 
@@ -257,6 +293,13 @@ public class TemperatureFetcher {
                             break;
                         case CALLBACK_DEVICE_NOT_FOUND:
                             callbackRunnable = deviceNotFoundRunnable;
+                            break;
+                        case CALLBACK_BLUETOOTH_DISABLED:
+                            callbackRunnable = bluetoothDisabledRunnable;
+                            break;
+                        case CALLBACK_NO_PERMISSION:
+                            callbackRunnable = noPermissionRunnable;
+                            break;
                     }
                     callback = new Thread(callbackRunnable);
                     callback.start();
@@ -271,7 +314,10 @@ public class TemperatureFetcher {
         dataLock.lock();
         String result;
         try {
-            result = new String(data);
+            if (data != null)
+                result = new String(data);
+            else
+                result = "0";
         } finally {
             dataLock.unlock();
         }

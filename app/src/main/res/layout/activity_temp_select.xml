@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/categoryTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/text_view_oval"
+        android:text="Button"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="@+id/CurTempHomeBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/meatTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="150dp"
+        android:background="@drawable/text_view_oval"
+        android:text="Button"
+        android:textColor="@android:color/white"
+        android:onClick="goBack"
+        app:layout_constraintEnd_toStartOf="@+id/CurTempHomeBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryTitle" />
+
+    <Button
+        android:id="@+id/CurTempHomeBtn"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:background="@drawable/button_qtr_circle"
+        android:text="--° / --°"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:onClick="loadMainActivity"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/meatView"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="128dp"
+        app:layout_constraintBottom_toTopOf="@+id/meatDescription"
+        app:layout_constraintDimensionRatio=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meatTitle"
+        app:srcCompat="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/meatDescription"
+        android:layout_width="347dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="TextView balh blah blah blah blah ablha blah blah blah ablha blah ablah blah ablha ablha blah balha blahbalha blah "
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meatView" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="216dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginEnd="96dp"
+        app:layout_constraintBottom_toTopOf="@+id/recommend"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meatDescription" />
+
+    <TextView
+        android:id="@+id/recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recommended:"
+        app:layout_constraintBottom_toTopOf="@+id/target"
+        app:layout_constraintStart_toStartOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <TextView
+        android:id="@+id/target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Target:"
+        app:layout_constraintBottom_toTopOf="@+id/tempSelStart"
+        app:layout_constraintStart_toStartOf="@+id/recommend"
+        app:layout_constraintTop_toBottomOf="@+id/recommend" />
+
+    <EditText
+        android:id="@+id/targetTemp"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Temp"
+        android:inputType="number"
+        android:textAlignment="textEnd"
+        app:layout_constraintBaseline_toBaselineOf="@+id/target"
+        app:layout_constraintEnd_toStartOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/recmndTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" RecTemp"
+        android:textAlignment="viewStart"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/recommend"
+        app:layout_constraintEnd_toEndOf="@+id/spinner" />
+
+    <Button
+        android:id="@+id/tempSelStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/button_oval"
+        android:text="Start"
+        android:textColor="@android:color/white"
+        android:onClick="tempSelect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/target" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="°F"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/targetTemp"
+        app:layout_constraintEnd_toEndOf="@+id/recmndTemp" />
+</android.support.constraint.ConstraintLayout>
